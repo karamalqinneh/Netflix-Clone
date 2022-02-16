@@ -1,6 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ModalMovie from "../modalMovie/ModalMovie";
 
 const SingleMovieCard = styled(Card)`
@@ -23,8 +23,47 @@ const StyledText = styled(Card.Text)`
 
 const Movie = (props) => {
   const [modalShow, setModalShow] = useState(false);
-  //   onClick={() => setModalShow(true)} butt
-  //   onHide={() => setModalShow(false)}
+  // const [isFav, setIsFav] = useState(false);
+
+  const handleDelete = async (id) => {
+    console.log(id);
+    const response = await fetch(
+      `${process.env.REACT_APP_SERVER}deleteMovie/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+    if (response.status === 204) {
+      console.log("deleted");
+    }
+  };
+
+  const onClickHandler = () => {
+    setModalShow(true);
+  };
+
+  const onHideHandler = () => {
+    setModalShow(false);
+    // setIsFav(false);
+  };
+
+  let buttonRender;
+  if (!props.fromFav == true) {
+    buttonRender = (
+      <Button variant="secondary" onClick={onClickHandler}>
+        Add To Favorites
+      </Button>
+    );
+  } else {
+    buttonRender = (
+      <>
+        <Button variant="secondary" onClick={handleDelete(props.data.id)}>
+          Delete
+        </Button>{" "}
+        <Button variant="secondary"> Update </Button>
+      </>
+    );
+  }
   return (
     <>
       <SingleMovieCard key={props.data.title}>
@@ -35,15 +74,13 @@ const Movie = (props) => {
         <Card.Body>
           <Card.Title>{props.data.title}</Card.Title>
           <StyledText>{props.data.overview}</StyledText>
-          <Button variant="secondary" onClick={() => setModalShow(true)}>
-            Add To Favorites
-          </Button>
+          {buttonRender}
         </Card.Body>
       </SingleMovieCard>
       <ModalMovie
         show={modalShow}
         movieData={props.data}
-        onHide={() => setModalShow(false)}
+        onHide={onHideHandler}
       />
     </>
   );
