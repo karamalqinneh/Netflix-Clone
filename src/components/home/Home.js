@@ -1,4 +1,4 @@
-import Header from "../header/Header";
+import NavBar from "../navbar/NavBar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import MovieList from "../movieList/MovieList";
@@ -20,8 +20,8 @@ const Home = () => {
   useEffect(() => fetchMoviesData(), []);
   return (
     <>
-      <Header></Header>
-      <MovieList trendingMovies={moviesList}></MovieList>
+      <NavBar></NavBar>
+      <MovieList movies={moviesList}></MovieList>
     </>
   );
 };

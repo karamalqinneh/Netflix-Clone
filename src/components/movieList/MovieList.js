@@ -9,8 +9,14 @@ const MoviesContainer = styled.div`
 `;
 
 const MovieList = (props) => {
-  let movies = props.trendingMovies.map((ele) => (
-    <Movie data={ele}>{props.children}</Movie>
+  let fromFav;
+  if (props.fromFav != null) {
+    fromFav = true;
+  }
+  let movies = props.movies.map((ele) => (
+    <Movie data={ele} fromFav={fromFav}>
+      {props.children}
+    </Movie>
   ));
   return <MoviesContainer>{movies}</MoviesContainer>;
 };

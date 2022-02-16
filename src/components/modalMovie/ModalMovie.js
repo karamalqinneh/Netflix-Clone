@@ -1,11 +1,33 @@
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 import styled from "styled-components";
+import { useRef } from "react";
 
 const Img = styled.img`
   width: 100%;
 `;
 
 const ModalMovie = (props) => {
+  const commentRef = useRef();
+  async function submitHandler(e, movie) {
+    e.preventDefault();
+    const dataToBeSent = {
+      title: movie.title,
+      poster_path: movie.poster_path,
+      overview: movie.overview,
+      comment: movie.comment,
+    };
+    const url = `${process.env.REACT_APP_SERVER}addMovie`;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataToBeSent),
+    });
+    const data = await response.json();
+    console.log(response.status);
+    console.log(data);
+  }
   console.log(props.movieData);
   return (
     <Modal
@@ -24,20 +46,34 @@ const ModalMovie = (props) => {
           src={`https://image.tmdb.org/t/p/w1280/${props.movieData.poster_path}`}
         />
         <p>{props.movieData.overview}</p>
+        <Form>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Comment</Form.Label>
+            <Form.Control
+              ref={commentRef}
+              type="text"
+              placeholder="Enter your comment"
+            />
+
+            <Form.Text className="text-muted"></Form.Text>
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            {/* onClick={handleComment} */}
+            Submit
+          </Button>
+          <Button
+            variant="primary"
+            type="submit"
+            onClick={(e) => {
+              submitHandler(e, props.movieData);
+            }}
+          >
+            Add to Favorites
+          </Button>
+        </Form>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>
-        <form
-          action="https://cinematology.herokuapp.com/addMovie"
-          method="POST"
-        >
-          <input
-            type="text"
-            name="comment"
-            placeholder="Add a comment if you want"
-          />
-          <Button type="submit">Add to favorites page</Button>
-        </form>
       </Modal.Footer>
     </Modal>
   );
