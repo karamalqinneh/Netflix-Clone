@@ -2,6 +2,10 @@ import { Modal, Button, Form } from "react-bootstrap";
 import styled from "styled-components";
 import { useRef } from "react";
 
+const StyledModal = styled(Modal)`
+  height: 100vh;
+`;
+
 const Img = styled.img`
   width: 100%;
 `;
@@ -30,7 +34,7 @@ const ModalMovie = (props) => {
   }
   console.log(props.movieData);
   return (
-    <Modal
+    <StyledModal
       {...props}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
@@ -75,7 +79,7 @@ const ModalMovie = (props) => {
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>
       </Modal.Footer>
-    </Modal>
+    </StyledModal>
   );
 };
 

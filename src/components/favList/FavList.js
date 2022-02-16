@@ -19,8 +19,8 @@ const FavList = () => {
   useEffect(() => fetchMoviesData(), []);
   return (
     <>
-      <NavBar></NavBar>
-      <MovieList movies={moviesList} fromFav={true}></MovieList>
+      <NavBar />
+      <MovieList movies={moviesList} fromFav={true} />
     </>
   );
 };

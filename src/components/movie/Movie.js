@@ -4,15 +4,15 @@ import { useState, useEffect } from "react";
 import ModalMovie from "../modalMovie/ModalMovie";
 
 const SingleMovieCard = styled(Card)`
-  width: 15vw;
+  width: 20vw;
   height: 100%;
   margin: 2.5vh;
   border-radius: 10%;
 `;
 
 const StyledImg = styled(Card.Img)`
-  width: 15vw;
-  height: 45vh;
+  width: 20vw;
+  height: 55vh;
   border-top-right-radius: 10%;
   border-top-left-radius: 10%;
 `;
@@ -26,7 +26,6 @@ const Movie = (props) => {
   // const [isFav, setIsFav] = useState(false);
 
   const handleDelete = async (id) => {
-    console.log(id);
     const response = await fetch(
       `${process.env.REACT_APP_SERVER}deleteMovie/${id}`,
       {
@@ -35,6 +34,7 @@ const Movie = (props) => {
     );
     if (response.status === 204) {
       console.log("deleted");
+      console.log(id);
     }
   };
 
@@ -57,7 +57,12 @@ const Movie = (props) => {
   } else {
     buttonRender = (
       <>
-        <Button variant="secondary" onClick={handleDelete(props.data.id)}>
+        <Button
+          variant="secondary"
+          onClick={() => {
+            handleDelete(props.data.id);
+          }}
+        >
           Delete
         </Button>{" "}
         <Button variant="secondary"> Update </Button>
